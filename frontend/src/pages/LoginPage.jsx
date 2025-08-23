@@ -8,6 +8,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { loginLoading, loginSuccess, loginError } = useSelector(
     (state) => state.auth
@@ -18,8 +19,31 @@ const LoginPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        newErrors.email = "Please enter a valid email address";
+      }
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const HandleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     await dispatch(login(email, password));
   };
 
@@ -46,11 +70,12 @@ const LoginPage = () => {
       <div className="min-h-[35vh] flex justify-center items-center">
         <img src="/login_yellow_icon.png" className="w-2/5  mx-auto" alt="" />
       </div>
-      <div className="bg-white min-h-[65vh]	rounded-t-3xl shadow-md     p-8 max-w-md w-full">
-        <h1 className="text-[7vw] font-bold text-center text-light_black  mb-6">
+      <div className="bg-white min-h-[65vh] rounded-t-3xl shadow-md p-8 max-w-md w-full">
+        <h1 className="text-[7vw] font-bold text-center text-light_black mb-6">
           Welcome Back !
         </h1>
         <form onSubmit={HandleSubmit}>
+          {/* Email */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-600 mb-2">
               Email Address
@@ -61,10 +86,16 @@ const LoginPage = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-200"
+              className={`w-full p-3 border rounded-md focus:outline-none transition duration-200 ${
+                errors.email ? "border-red-500" : "border-gray-300 focus:border-blue-500"
+              }`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
+
+          {/* Password */}
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-600 mb-2">
               Password
@@ -75,15 +106,21 @@ const LoginPage = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-200"
+              className={`w-full p-3 border rounded-md focus:outline-none transition duration-200 ${
+                errors.password ? "border-red-500" : "border-gray-300 focus:border-blue-500"
+              }`}
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
+
           {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+
           <button
             type="submit"
             disabled={loginLoading}
-            className="w-full bg-blue_c  text-gray_c py-3 rounded-md hover:bg-gray-400 font-medium transition duration-200"
+            className="w-full bg-blue_c text-gray_c py-3 rounded-md hover:bg-gray-400 font-medium transition duration-200"
           >
             {loginLoading ? (
               <div className="flex justify-center items-center">
@@ -112,7 +149,7 @@ const LoginPage = () => {
           </button>
           <div className="text-center font-medium mt-4 text-sm text-gray-700">
             Don't have an account?{" "}
-            <Link to="/register" className="text-yellow_c  hover:underline">
+            <Link to="/register" className="text-yellow_c hover:underline">
               Register
             </Link>
           </div>
