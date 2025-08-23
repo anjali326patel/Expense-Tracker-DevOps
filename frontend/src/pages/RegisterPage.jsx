@@ -15,12 +15,44 @@ const RegisterPage = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
+  // Local validation errors
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else {
+      // simple regex for email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        newErrors.email = "Please enter a valid email address";
+      }
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return; // stop if errors
+
     await dispatch(register(name, email, password));
   };
 
@@ -48,11 +80,12 @@ const RegisterPage = () => {
       <div className="min-h-[35vh] flex justify-center items-center">
         <img src="/register_yellow_icon.png" className="w-2/5 mx-auto" alt="" />
       </div>
-      <div className="bg-white min-h-[65vh]	rounded-t-3xl shadow-md     p-8 max-w-md w-full">
-        <h1 className="text-[7vw] font-bold text-center text-light_black  mb-6">
+      <div className="bg-white min-h-[65vh] rounded-t-3xl shadow-md p-8 max-w-md w-full">
+        <h1 className="text-[7vw] font-bold text-center text-light_black mb-6">
           Create an Account
         </h1>
         <form onSubmit={handleSubmit}>
+          {/* Name */}
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-600 mb-2">
               Name
@@ -63,10 +96,14 @@ const RegisterPage = () => {
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200"
+              className={`w-full p-3 border rounded-md focus:outline-none transition duration-200 ${
+                errors.name ? "border-red-500" : "border-gray-300 focus:border-purple-500"
+              }`}
             />
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
           </div>
+
+          {/* Email */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-600 mb-2">
               Email Address
@@ -77,10 +114,14 @@ const RegisterPage = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200"
+              className={`w-full p-3 border rounded-md focus:outline-none transition duration-200 ${
+                errors.email ? "border-red-500" : "border-gray-300 focus:border-purple-500"
+              }`}
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
+
+          {/* Password */}
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-600 mb-2">
               Password
@@ -91,17 +132,18 @@ const RegisterPage = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-purple-500 transition duration-200"
+              className={`w-full p-3 border rounded-md focus:outline-none transition duration-200 ${
+                errors.password ? "border-red-500" : "border-gray-300 focus:border-purple-500"
+              }`}
             />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
-          {registerError && (
-            <p className="text-red-500 text-sm">{registerError}</p>
-          )}
+
+         
           <button
             type="submit"
             disabled={registerLoading}
-            className="w-full bg-blue_c  text-gray_c py-3 rounded-md hover:bg-gray-400 font-medium transition duration-200"
+            className="w-full bg-blue_c text-gray_c py-3 rounded-md hover:bg-gray-400 font-medium transition duration-200"
           >
             {registerLoading ? (
               <div className="flex justify-center items-center">
@@ -130,7 +172,7 @@ const RegisterPage = () => {
           </button>
           <div className="text-center font-medium mt-4 text-sm text-gray-700">
             Already have an account?{" "}
-            <Link to="/login" className="text-yellow_c  hover:underline">
+            <Link to="/login" className="text-yellow_c hover:underline">
               Login
             </Link>
           </div>
