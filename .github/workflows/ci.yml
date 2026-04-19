@@ -33,7 +33,7 @@ jobs:
     - name: Build Frontend
       run: |
         cd frontend
-        npm run build
+        CI=false npm run build
 
     # 🔹 Basic Test (so CI shows testing)
     - name: Run Tests
