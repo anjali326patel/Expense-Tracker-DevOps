@@ -1,7 +1,7 @@
 // components/BudgetInput.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserBudget } from "../actions/authActions";
+// import { updateUserBudget } from "../actions/authActions";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,7 @@ const BudgetInput = ({ setBudgetModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(updateUserBudget(localBudget));
+    //await dispatch(updateUserBudget(localBudget));
     setBudgetModal(false);
   };
 
