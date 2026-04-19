@@ -31,8 +31,8 @@ const AllRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+	<Route path="/login" element={<LoginGuard />} />
+	<Route path="/register" element={<RegisterGuard />} />
       <Route
         path="/expenses"
         element={
