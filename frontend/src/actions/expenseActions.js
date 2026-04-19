@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseurl = "https://expense-tracker-nu-weld.vercel.app/api/expenses";
+const baseurl = "https://expense-tracker-devops-4bw1.onrender.com/api/expenses";
 // const baseurl = "http://localhost:3000/api/expenses";
 
 export const fetchExpenses = (month, year) => async (dispatch) => {
