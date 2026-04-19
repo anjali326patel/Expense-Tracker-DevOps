@@ -2,7 +2,6 @@ import axios from "axios";
 
 const baseurl = "https://expense-tracker-devops-4bw1.onrender.com/api/users";
 
-// REGISTER
 export const register = (userData) => async (dispatch) => {
   dispatch({ type: "REGISTER_REQUEST" });
 
@@ -17,15 +16,12 @@ export const register = (userData) => async (dispatch) => {
   }
 };
 
-// LOGIN
 export const login = (userData) => async (dispatch) => {
   dispatch({ type: "LOGIN_REQUEST" });
 
   try {
     const res = await axios.post(`${baseurl}/login`, userData);
-
     sessionStorage.setItem("token", res.data.token);
-
     dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
   } catch (error) {
     dispatch({
@@ -35,7 +31,6 @@ export const login = (userData) => async (dispatch) => {
   }
 };
 
-// LOGOUT
 export const logout = () => (dispatch) => {
   sessionStorage.removeItem("token");
   dispatch({ type: "LOGOUT" });
