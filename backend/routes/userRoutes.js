@@ -23,6 +23,7 @@ router.post("/register", async (req, res) => {
     await user.save();
     res.status(201).json({ message: "Successfully Registered" });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Internal server error. Please try again later." });
