@@ -44,7 +44,10 @@ const LoginPage = () => {
   const HandleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    await dispatch(login(email, password));
+    dispatch(login({
+      email: email,
+      password: password
+    }));
   };
 
   if (token) {
