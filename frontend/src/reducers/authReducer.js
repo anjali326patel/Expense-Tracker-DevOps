@@ -58,13 +58,12 @@ const userReducer = (state = initialState, action) => {
 
     case "UPDATE_BUDGET_SUCCESS":
       return {
-        ...state,
-        budget: action.payload,
-        updateBudgetLoading: false,
-        updateBudgetError: null,
-        updateBudgetSuccess: true,
-      };
-
+    	...state,
+    	budget: action.payload.budget, // ✅ FIX
+    	updateBudgetLoading: false,
+    	updateBudgetError: null,
+    	updateBudgetSuccess: true,
+    };
     case "LOGIN_ERROR":
       return {
         ...state,

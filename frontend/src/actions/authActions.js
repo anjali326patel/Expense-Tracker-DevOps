@@ -31,6 +31,30 @@ export const login = (userData) => async (dispatch) => {
   }
 };
 
+export const updateUserBudget = (data) => async (dispatch) => {
+  dispatch({ type: "UPDATE_BUDGET_REQUEST" });
+
+  try {
+    const token = sessionStorage.getItem("token");
+
+    const res = await axios.put(`${baseurl}/budget`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "UPDATE_BUDGET_SUCCESS",
+      payload: res.data, // { budget: value }
+    });
+  } catch (error) {
+    dispatch({
+      type: "UPDATE_BUDGET_ERROR",
+      payload: error.response?.data?.message || error.message,
+    });
+  }
+};
+
 export const logout = () => (dispatch) => {
   sessionStorage.removeItem("token");
   dispatch({ type: "LOGOUT" });
