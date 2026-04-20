@@ -117,3 +117,7 @@ export const deleteExpense = (id) => async (dispatch) => {
     });
   }
 };
+export const logout = () => (dispatch) => {
+  sessionStorage.removeItem("token");
+  dispatch({ type: "LOGOUT" });
+};
