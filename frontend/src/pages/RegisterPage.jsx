@@ -53,7 +53,11 @@ const RegisterPage = () => {
     e.preventDefault();
     if (!validateForm()) return; // stop if errors
 
-    await dispatch(register(name, email, password));
+    dispatch(register({
+      name: name,
+      email: email,
+      password: password
+    }));
   };
 
   const token = sessionStorage.getItem("token");
