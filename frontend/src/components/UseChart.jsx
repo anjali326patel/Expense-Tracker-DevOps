@@ -1,50 +1,58 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import { MdEdit } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 function UseChart({ totalExpense, onEditBudget }) {
-  const budget=sessionStorage.getItem("budget")
+  // ✅ GET BUDGET FROM REDUX (NOT sessionStorage)
+  const { budget } = useSelector((state) => state.auth);
 
-  const remainingBudget = budget - totalExpense;
+  const budgetValue = Number(budget || 0);
+  const expensesValue = Number(totalExpense || 0);
+  const remainingBudget = Math.max(budgetValue - expensesValue, 0);
 
   return (
-    <div className="relative  mx-auto">
-   
-      <div className="relative w-3/5  mx-auto">
+    <div className="relative mx-auto">
+      <div className="relative w-3/5 mx-auto">
         <PieChart
           data={[
-            { title: "Expenses", value: totalExpense, color: "#F9A11B" },
+            { title: "Expenses", value: expensesValue, color: "#F9A11B" },
             {
               title: "Remaining Budget",
-              value: remainingBudget > 0 ? remainingBudget : 0,
+              value: remainingBudget,
               color: "#2A306E",
             },
           ]}
-          //label={({ dataEntry }) => `${Math.round(dataEntry.percentage)} %`}
           labelStyle={{
             fontSize: "5px",
             fontFamily: "sans-serif",
             fill: "#fff",
           }}
-          //  labelPosition={60}
           radius={42}
-         // startAngle={-40}
           animate
           lineWidth={20}
-       //   rounded
         />
+
         <div className="absolute text-4xl inset-0 flex flex-col items-center justify-center">
           <div className="relative text-center rounded-full p-4">
-            <p className="text-sm  font-semibold text-[#6E6D6D]"> Balance</p>
-            <p className="font-bold  text-[7vw] text-light_black">Rs.{budget}</p>
-            <p onClick={onEditBudget} className="text-[#6E6D6D] w-max mx-auto text-lg">
-            <MdEdit />
+            <p className="text-sm font-semibold text-[#6E6D6D]">Balance</p>
 
+            {/* ✅ FIXED DISPLAY */}
+            <p className="font-bold text-[7vw] text-light_black">
+              Rs.{budgetValue.toFixed(2)}
+            </p>
+
+            <p
+              onClick={onEditBudget}
+              className="text-[#6E6D6D] w-max mx-auto text-lg cursor-pointer"
+            >
+              <MdEdit />
             </p>
           </div>
         </div>
       </div>
-      <div className="flex   text-light_black border-b pb-3 justify-center whitespace-nowrap mt-2">
+
+      <div className="flex text-light_black border-b pb-3 justify-center whitespace-nowrap mt-2">
         <div className="flex items-center mr-4">
           <div
             className="w-4 h-4 mr-2"
@@ -61,12 +69,18 @@ function UseChart({ totalExpense, onEditBudget }) {
         </div>
       </div>
 
-      <ul className="font-bold list-disc text-md pl-5	 text-start text-blue_c  flex justify-between mt-4">
-        <li className="">
-          EXPENSES <h2 className="text-light_black text-xl"> Rs.{totalExpense}</h2>
+      <ul className="font-bold list-disc text-md pl-5 text-start text-blue_c flex justify-between mt-4">
+        <li>
+          EXPENSES
+          <h2 className="text-light_black text-xl">
+            Rs.{expensesValue.toFixed(2)}
+          </h2>
         </li>
         <li>
-          REMAINING <h3 className="text-light_black text-xl"> Rs.{remainingBudget > 0 ? remainingBudget : 0}</h3>
+          REMAINING
+          <h3 className="text-light_black text-xl">
+            Rs.{remainingBudget.toFixed(2)}
+          </h3>
         </li>
       </ul>
     </div>

@@ -6,8 +6,8 @@ import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-900">
-  <div className="w-full max-w-md bg-white min-h-screen shadow-lg rounded-lg overflow-hidden">
+    <div className="min-h-screen flex justify-center items-center bg-gray-900 px-2 py-4">
+  <div className="w-full max-w-md bg-white min-h-screen shadow-xl rounded-lg overflow-hidden border border-gray-100">
     
     <AllRoutes />
 

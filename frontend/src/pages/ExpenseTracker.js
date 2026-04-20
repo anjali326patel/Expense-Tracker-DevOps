@@ -65,7 +65,12 @@ const ExpenseTracker = () => {
     async (e) => {
       e.preventDefault();
       if (!amount || !category) return;
-      const newExpense = { amount, category };
+      const parsedAmount = Number(amount);
+      if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
+        toast.error("Please enter a valid amount");
+        return;
+      }
+      const newExpense = { amount: parsedAmount, category: category.trim() };
 
       if (editId) {
         await dispatch(updateExpense(editId, newExpense));
@@ -116,7 +121,7 @@ const ExpenseTracker = () => {
   };
 
   const totalExpense = expenses.reduce((accumulator, item) => {
-    return (accumulator += item.amount);
+    return accumulator + Number(item.amount || 0);
   }, 0);
 
   function onEditBudget() {
@@ -134,7 +139,7 @@ const ExpenseTracker = () => {
   }, []);
 
   return (
-    <div className="container relative mx-auto pb-20 p-4">
+    <div className="container relative mx-auto pb-20 px-4 pt-5">
       <UserInfo user={user} onLogout={handleLogout} />
 
       {showBudgetModal && <BudgetInput setBudgetModal={setBudgetModal} />}
@@ -155,16 +160,16 @@ const ExpenseTracker = () => {
         onEditBudget={onEditBudget}
         budget={budget}
       />
-      <div className="flex justify-between text-blue_c items-start  pt-4">
+      <div className="flex justify-between text-blue_c items-start pt-5 gap-3">
         <div>
           {" "}
-          <h1 className="font-bold  text-2xl">Transactions</h1>
+          <h1 className="font-bold text-2xl">Transactions</h1>
           {earliestDate && (
-            <div className="flex mt-2 mb-4">
+            <div className="flex mt-2 mb-4 flex-wrap gap-2">
               <select
                 value={month}
                 onChange={handleMonthChange}
-                className="border bg-[#E9E9E9] uppercase font-medium rounded-md p-2 mr-2"
+                className="border bg-[#E9E9E9] uppercase font-medium rounded-md p-2 min-w-[140px]"
               >
                 {getMonthOptions().map(({ year, month }) => (
                   <option key={uuidv4()} value={month}>
@@ -177,7 +182,7 @@ const ExpenseTracker = () => {
               <select
                 value={year}
                 onChange={handleYearChange}
-                className="border bg-[#E9E9E9] uppercase font-medium  rounded-md p-2"
+                className="border bg-[#E9E9E9] uppercase font-medium rounded-md p-2 min-w-[110px]"
               >
                 {Array.from(
                   {
@@ -198,16 +203,16 @@ const ExpenseTracker = () => {
             </div>
           )}
         </div>
-        <div
+        <button
+          type="button"
           onClick={showForm}
-          className="bg-[#519400]  mt-1 font-bold rounded-tr-xl rounded-bl-xl flex items-center text-white h-max px-2 py-1"
+          className="bg-[#519400] mt-1 font-bold rounded-tr-xl rounded-bl-xl flex items-center text-white h-max px-3 py-2 shadow-sm"
         >
-          {" "}
-          <IoMdAddCircleOutline />
+          <IoMdAddCircleOutline className="mr-1" />
           ADD
-        </div>
+        </button>
       </div>
-      {expenses.length>0 ? (
+      {expenses.length > 0 ? (
         <ExpenseList
           handleEditClick={handleEditClick}
           handleDeleteClick={handleDeleteClick}

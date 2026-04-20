@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { formatDate } from "../utils/dateUtils";
 import { FaRegEdit } from "react-icons/fa";
 import { MdAutoDelete, MdDelete } from "react-icons/md";
-import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -44,8 +43,8 @@ const ExpenseList = ({
     () =>
       expenses?.map((expense) => (
         <li
-          key={uuidv4()}
-          className="flex items-center bg-[#E9E9E9] justify-between mt-3 px-3 rounded-lg py-1"
+          key={expense._id}
+          className="flex items-center bg-[#E9E9E9] justify-between mt-3 px-3 rounded-lg py-2 shadow-sm"
         >
           <div>
             <h1 className="font-semibold text-light_black text-xl">
@@ -58,7 +57,7 @@ const ExpenseList = ({
 
           <div className="text-2xl flex justify-center items-center">
             <span className="text-blue_c font-bold text-2xl">
-              ₹ {expense.amount}
+              ₹ {Number(expense.amount || 0).toFixed(2)}
             </span>
 
             <button

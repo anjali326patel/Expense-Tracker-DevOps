@@ -52,15 +52,17 @@ const ExpenseForm = ({
   }, [updateSuccess, dispatch]);
 
   return (
-    <div className="fixed shadow-lg border text-light_black rounded-lg z-10 bg-white w-4/5 px-5 py-3 top-50 left-5 bottom-50 right-5 mx-auto">
+    <div className="fixed shadow-lg border text-light_black rounded-lg z-10 bg-white w-11/12 max-w-md px-5 py-4 inset-0 my-auto mx-auto h-max">
       <div className="flex text-lg font-semibold items-center mb-2">
         <h1>{editId ? "Edit" : "Add"} Expense</h1>
         <div
           className="w-max cursor-pointer ml-auto text-3xl"
           onClick={() => {
-            setAmount(null)
-            setCategory(null)
-            setVisibleForm(false)}}
+            setAmount("");
+            setCategory("");
+            setEditId(null);
+            setVisibleForm(false);
+          }}
         >
           <IoMdCloseCircleOutline />
         </div>
