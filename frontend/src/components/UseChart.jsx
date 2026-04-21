@@ -38,7 +38,7 @@ function UseChart({ totalExpense, onEditBudget }) {
             <p className="text-sm font-semibold text-[#6E6D6D]">Balance</p>
 
             {/* FIXED DISPLAY */}
-            <p className="font-bold text-[1.7vw] text-light_black">
+            <p className="font-bold text-[4vw] text-light_black">
               Rs.{budgetValue.toFixed(2)}
             </p>
 
