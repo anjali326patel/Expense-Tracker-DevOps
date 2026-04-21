@@ -4,7 +4,7 @@ import { MdEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 
 function UseChart({ totalExpense, onEditBudget }) {
-  // ✅ GET BUDGET FROM REDUX (NOT sessionStorage)
+  // GET BUDGET FROM REDUX (NOT sessionStorage)
   const { budget } = useSelector((state) => state.auth);
 
   const budgetValue = Number(budget || 0);
@@ -37,8 +37,8 @@ function UseChart({ totalExpense, onEditBudget }) {
           <div className="relative text-center rounded-full p-4">
             <p className="text-sm font-semibold text-[#6E6D6D]">Balance</p>
 
-            {/* ✅ FIXED DISPLAY */}
-            <p className="font-bold text-[7vw] text-light_black">
+            {/* FIXED DISPLAY */}
+            <p className="font-bold text-[1.7vw] text-light_black">
               Rs.{budgetValue.toFixed(2)}
             </p>
 
